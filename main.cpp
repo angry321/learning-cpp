@@ -6,6 +6,7 @@
 #include <SDL2/SDL_scancode.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_video.h>
+#include <SDL2/SDL_image.h>
 #include <iostream>
 
 struct Player {
@@ -70,19 +71,24 @@ int main() {
 		SDL_SetRenderDrawColor(renderer, 34, 139, 34, 255);
 		SDL_RenderClear(renderer);
 
-		player.draw(renderer);
-
-		SDL_RenderPresent(renderer);
-		SDL_Delay(16);
-
-
+		SDL_Texture* texture = IMG_LoadTexture(renderer, "assets/images/garden.png");
+		
 		for (int y = 0; y < 5; y++) {
 			for (int x = 0; x < 5; x++) {
 				SDL_Rect cell = {x * 64, y * 64, 64, 64};
-				SDL_SetRenderDrawColor(renderer, 139, 90, 43, 255);
-				SDL_RenderDrawRect(renderer, &cell);
-			}
+				SDL_RenderCopy(renderer, texture, NULL, &cell);
+			}	
 		}
+		SDL_DestroyTexture(texture);
+
+
+
+
+
+
+		player.draw(renderer);
+		SDL_RenderPresent(renderer);
+		SDL_Delay(16);	
 	}
 	
 	SDL_DestroyRenderer(renderer);
