@@ -15,17 +15,16 @@ struct Player {
 	float speed;
 	int size;
 
-	Player() : x(400), y(300), speed(3.0f), size(32) {}
+	Player() : x(400), y(300), speed(3.0f), size(64) {}
 
 	void move(float dx, float dy) {
 		x += dx * speed;
 		y += dy * speed;
 	}
 
-	void draw(SDL_Renderer* renderer) {
+	void draw(SDL_Renderer* renderer, SDL_Texture* texture) {
 		SDL_Rect rect = {(int)x, (int)y, size, size};
-		SDL_SetRenderDrawColor(renderer, 255, 200, 0, 255);
-		SDL_RenderFillRect(renderer, &rect);
+		SDL_RenderCopy(renderer, texture, NULL, &rect);
 	}
 };
 
@@ -52,8 +51,6 @@ int main() {
 
 	textures["garden"] = IMG_LoadTexture(renderer, "assets/images/garden.png");
 	textures["player"] = IMG_LoadTexture(renderer, "assets/images/player.png");
-
-
 
 	while (running) {
 		while (SDL_PollEvent(&event)) {
@@ -86,17 +83,17 @@ int main() {
 			}	
 		}
 
-		for  (auto& pair : textures) {
-			SDL_DestroyTexture(pair.second);
-		}
 
 
 
 
-
-		player.draw(renderer);
+		player.draw(renderer, textures["player"]);
 		SDL_RenderPresent(renderer);
 		SDL_Delay(16);	
+	}
+
+	for  (auto& pair : textures) {
+		SDL_DestroyTexture(pair.second);
 	}
 	
 	SDL_DestroyRenderer(renderer);
