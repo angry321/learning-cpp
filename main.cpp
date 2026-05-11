@@ -65,6 +65,8 @@ int main() {
 			player.speed = 3.0f;
 		}
 
+		player.move(dx, dy);
+
 		SDL_SetRenderDrawColor(renderer, 34, 139, 34, 255);
 		SDL_RenderClear(renderer);
 
@@ -72,6 +74,15 @@ int main() {
 
 		SDL_RenderPresent(renderer);
 		SDL_Delay(16);
+
+
+		for (int y = 0; y < 5; y++) {
+			for (int x = 0; x < 5; x++) {
+				SDL_Rect cell = {x * 64, y * 64, 64, 64};
+				SDL_SetRenderDrawColor(renderer, 139, 90, 43, 255);
+				SDL_RenderDrawRect(renderer, &cell);
+			}
+		}
 	}
 	
 	SDL_DestroyRenderer(renderer);
