@@ -8,6 +8,7 @@
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <map>
 
 struct Player {
 	float x, y;
@@ -47,6 +48,13 @@ int main() {
 	bool running = true;
 	SDL_Event event;
 
+	std::map<std::string, SDL_Texture*> textures;
+
+	textures["garden"] = IMG_LoadTexture(renderer, "assets/images/garden.png");
+	textures["player"] = IMG_LoadTexture(renderer, "assets/images/player.png");
+
+
+
 	while (running) {
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) running = false;
@@ -70,17 +78,17 @@ int main() {
 
 		SDL_SetRenderDrawColor(renderer, 34, 139, 34, 255);
 		SDL_RenderClear(renderer);
-
-		SDL_Texture* texture = IMG_LoadTexture(renderer, "assets/images/garden.png");
-		
+	
 		for (int y = 0; y < 5; y++) {
 			for (int x = 0; x < 5; x++) {
 				SDL_Rect cell = {x * 64, y * 64, 64, 64};
-				SDL_RenderCopy(renderer, texture, NULL, &cell);
+				SDL_RenderCopy(renderer, textures["garden"], NULL, &cell);
 			}	
 		}
-		SDL_DestroyTexture(texture);
 
+		for  (auto& pair : textures) {
+			SDL_DestroyTexture(pair.second);
+		}
 
 
 
